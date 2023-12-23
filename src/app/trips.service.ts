@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, map, Observable} from "rxjs";
 import {Trip} from "./Trip";
 import {HttpClient} from "@angular/common/http";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
+import {Currency} from "./Currency";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class TripsService {
 
   tripsSubject = new BehaviorSubject<Trip[]>([])
   selectedTripsIdSubject = new BehaviorSubject<String[]>([])
+  currentCurrencySubject = new BehaviorSubject<Currency>(Currency.PLN)
 
   getTrips(): Observable<Trip[]> {
     const current = this.tripsSubject.getValue()
@@ -52,6 +54,10 @@ export class TripsService {
             current.splice(index, 1);
         }
         this.selectedTripsIdSubject.next(current)
+    }
+
+    getCurrentCurrency(): Observable<Currency> {
+      return this.currentCurrencySubject.asObservable()
     }
 
   fetchTrips(): void {

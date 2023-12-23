@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Trip} from "../Trip";
 import {TripsService} from "../trips.service";
-import {CurrencyPipe, DatePipe, NgClass, NgForOf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, UpperCasePipe} from "@angular/common";
 import {TripWithBasketInfo} from "../TripWithBasketInfo";
+import {CurrencyPipe} from "../currency.pipe";
+import {combineLatest} from "rxjs";
+import {Currency} from "../Currency";
 
 @Component({
   selector: 'app-trips',
@@ -11,7 +14,9 @@ import {TripWithBasketInfo} from "../TripWithBasketInfo";
     NgForOf,
     DatePipe,
     NgClass,
-    CurrencyPipe
+    UpperCasePipe,
+    CurrencyPipe,
+    CurrencyPipe,
   ],
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.css'
@@ -23,6 +28,7 @@ export class TripsComponent implements OnInit{
   trips: TripWithBasketInfo[] = []
   maxPrice: number | undefined
   minPrice: number | undefined
+  currency: Currency = Currency.PLN
 
   book(trip: Trip) {
     this.tripsService.putTripInTheBasket(trip)
@@ -33,12 +39,13 @@ export class TripsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.tripsService.getTripsWithBasketInfo().subscribe(data => {
+    combineLatest([this.tripsService.getTripsWithBasketInfo(), this.tripsService.getCurrentCurrency()])
+        .subscribe(([newTrips, newCurrency]) => {
       // console.log(JSON.stringify(data))
-      this.trips = data
-      this.maxPrice = data.reduce((max, obj) => obj.trip.price > max ? obj.trip.price : max, data[0].trip.price)
-      this.minPrice = data.reduce((min, obj) => obj.trip.price < min ? obj.trip.price : min, data[0].trip.price)
-
+      this.trips = newTrips
+      this.maxPrice = newTrips.reduce((max, obj) => obj.trip.price > max ? obj.trip.price : max, newTrips[0].trip.price)
+      this.minPrice = newTrips.reduce((min, obj) => obj.trip.price < min ? obj.trip.price : min, newTrips[0].trip.price)
+      this.currency = newCurrency
     })
   }
 }
