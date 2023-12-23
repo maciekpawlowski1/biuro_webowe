@@ -1,15 +1,43 @@
-Test
-<div *ngFor="let trip of trips" class="card">
-  <img [src]="trip.image" alt="Zdjęcie wycieczki" class="rounded-image">
-  <div class="card-body">
-    <h5 class="card-title">{{ trip.name }}</h5>
-    <p class="card-text">{{ trip.description }}</p>
-    <p class="card-text">Kraj: {{ trip.country }}</p>
-    <p class="card-text">Data: od {{ trip.startDate }} do {{ trip.endDate }}</p>
-    <p class="card-text">Cena: {{ trip.price }} zł</p>
-    <p class="card-text">Dostępne miejsca: {{ trip.maxSeats > 0 ? trip.maxSeats : 'Brak miejsc' }}</p>
-    <button (click)="book(trip)" [disabled]="trip.maxSeats === 0" class="btn btn-primary">+</button>
-    <button (click)="cancel(trip)" [disabled]="trip.maxSeats === 20" class="btn btn-secondary">-</button>
+<div class="container mx-auto p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let trip of trips"
+         [ngClass]="{
+           'border-green-500': trip.price === maxPrice,
+           'border-red-500': trip.price === minPrice
+         }"
+         class="max-w-sm rounded overflow-hidden shadow-lg border-2">
+      <img class="w-32 h-32 object-cover rounded-full mx-auto mt-4" [src]="trip.image" alt="Zdjęcie wycieczki">
+      <div class="px-6 py-4">
+        <div class="font-bold text-xl mb-2">{{ trip.name }}</div>
+        <p class="text-gray-700 text-base">
+          {{ trip.description }}
+        </p>
+      </div>
+      <div class="px-6 pt-4 pb-2">
+        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ trip.country }}</span>
+        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ trip.startDate | date }} - {{ trip.endDate | date }}</span>
+        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ trip.price | currency }}</span>
+
+      </div>
+      <div class="flex justify-center">
+        <p class="text-gray-700 text-base pb-2">
+          Dostępne miejsca: <span [ngClass]="{'text-red-500': trip.availableSeats <= 3}">
+          {{ trip.availableSeats }}
+        </span>
+        </p>
+      </div>
+
+      <div class="flex justify-center items-center pb-2 ">
+        <button (click)="book(trip)"
+                [hidden]="trip.availableSeats === 0"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3">
+          +
+        </button>
+        <button (click)="cancel(trip)"
+                [disabled]="false"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
+          -
+        </button>
+      </div>
   </div>
 </div>
-

@@ -5,7 +5,7 @@ export interface Trip {
   startDate: string;
   endDate: string;
   price: number;
-  maxSeats: number;
+  availableSeats: number;
   description: string;
   image: string;
 }
