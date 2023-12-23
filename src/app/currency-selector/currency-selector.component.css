@@ -1,0 +1,6 @@
+.form-select {
+    transition: all 0.3s ease-in-out;
+}
+.form-select:focus {
+    box-shadow: 0 0 0 1px blue;
+}

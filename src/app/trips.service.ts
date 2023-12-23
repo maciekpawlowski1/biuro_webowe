@@ -65,4 +65,8 @@ export class TripsService {
       this.tripsSubject.next(data)
     })
   }
+
+  changeCurrency(newCurrency: Currency) {
+      this.currentCurrencySubject.next(newCurrency)
+  }
 }

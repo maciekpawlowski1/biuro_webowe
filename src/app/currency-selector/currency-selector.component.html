@@ -1,0 +1,9 @@
+<div class="flex justify-center items-center space-x-3">
+    <label for="currency" class="text-lg font-medium">Wybierz walutę:</label>
+    <select id="currency" class="form-select p-2 border border-gray-300 rounded"
+            (change)="changeCurrency()" [(ngModel)]="newCurrency">
+        <option value="PLN">PLN</option>
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+    </select>
+</div>
