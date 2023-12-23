@@ -21,8 +21,8 @@ export class TripsComponent implements OnInit{
   constructor(private tripsService: TripsService) {}
 
   trips: TripWithBasketInfo[] = []
-  maxPrice = 999999
-  minPrice = 0
+  maxPrice: number | undefined
+  minPrice: number | undefined
 
   book(trip: Trip) {
     this.tripsService.putTripInTheBasket(trip)
@@ -36,6 +36,9 @@ export class TripsComponent implements OnInit{
     this.tripsService.getTripsWithBasketInfo().subscribe(data => {
       // console.log(JSON.stringify(data))
       this.trips = data
+      this.maxPrice = data.reduce((max, obj) => obj.trip.price > max ? obj.trip.price : max, data[0].trip.price)
+      this.minPrice = data.reduce((min, obj) => obj.trip.price < min ? obj.trip.price : min, data[0].trip.price)
+
     })
   }
 }
