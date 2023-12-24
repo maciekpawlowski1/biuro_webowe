@@ -38,6 +38,10 @@ export class TripsComponent implements OnInit{
       this.tripsService.removeTripFromTheBasket(trip)
   }
 
+  deleteTrip(trip: Trip) {
+    this.tripsService.deleteTrip(trip)
+  }
+
   ngOnInit(): void {
     combineLatest([this.tripsService.getTripsWithBasketInfo(), this.tripsService.getCurrentCurrency()])
         .subscribe(([newTrips, newCurrency]) => {
