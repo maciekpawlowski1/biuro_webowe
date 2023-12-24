@@ -26,6 +26,13 @@
         </span>
         </p>
       </div>
+      <div class="flex justify-center">
+        <p class="text-gray-700 text-base pb-2">
+          W koszyku: <span class="text-white" [ngClass]="{'bg-red-500': tripWithInfo.placesInBasket <= 10, 'bg-green-500': tripWithInfo.placesInBasket > 10}">
+            {{ tripWithInfo.placesInBasket }}
+        </span>
+        </p>
+      </div>
 
       <div class="flex justify-center items-center pb-2 ">
         <button (click)="book(tripWithInfo.trip)"
