@@ -91,4 +91,10 @@ export class TripsService {
             this.tripsSubject.next(currentTrips)
         }
     }
+
+    addTrip(trip: Trip) {
+        const currentTrips = [...this.tripsSubject.getValue()]
+        currentTrips.push(trip)
+        this.tripsSubject.next(currentTrips)
+    }
 }

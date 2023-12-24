@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {Trip} from "../Trip";
+import {TripsService} from "../trips.service";
+import * as uuid from 'uuid';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-trip',
@@ -36,6 +39,8 @@ export class AddTripComponent implements OnInit {
     'image': this.imageFormControl
   });
 
+  constructor(private tripsService: TripsService, private router: Router) {
+  }
 
   ngOnInit() {
 
@@ -44,17 +49,12 @@ export class AddTripComponent implements OnInit {
   onSubmit() {
     this.wasContinueClicked = true;
     if(this.tripForm.valid) {
-      /*const newTrip: Trip = {
-        id: uuidv4(),
-        name: this.tripForm.ge,
-        country: formValues.country,
-        startDate: formValues.startDate,
-        endDate: formValues.endDate,
-        price: formValues.price,
-        availableSeats: formValues.availableSeats,
-        description: formValues.description,
-        image: formValues.image
-      }*/
+      const newTrip: Trip = this.tripForm.value
+
+      newTrip.id = uuid.v4()
+      this.tripsService.addTrip(newTrip)
+
+      this.router.navigate(['/trips']);
     }
   }
 
