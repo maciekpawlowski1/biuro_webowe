@@ -6,6 +6,7 @@ import {TripWithBasketInfo} from "../TripWithBasketInfo";
 import {CurrencyPipe} from "../currency.pipe";
 import {combineLatest} from "rxjs";
 import {Currency} from "../Currency";
+import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 
 @Component({
   selector: 'app-trips',
@@ -17,6 +18,7 @@ import {Currency} from "../Currency";
     UpperCasePipe,
     CurrencyPipe,
     CurrencyPipe,
+    TripRatingComponent,
   ],
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.css'

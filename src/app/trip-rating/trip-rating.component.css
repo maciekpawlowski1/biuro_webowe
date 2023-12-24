@@ -1,0 +1,8 @@
+.rating {
+    color: #ffdd00;
+    cursor: pointer;
+}
+
+.fa-star, .fa-star-o {
+    margin: 0 2px;
+}

@@ -1,0 +1,9 @@
+<div class="flex flex-row justify-center items-center">
+  <p class="pr-3">Oceń wycieczkę:</p>
+  <div class="rating">
+  <span *ngFor="let star of [].constructor(maxRating); let i = index" (click)="rate(i+1)">
+    <fa-icon [icon]="i < rating ? faStarSolid : faStarRegular" class="fa-2x"></fa-icon>
+  </span>
+  </div>
+</div>
+

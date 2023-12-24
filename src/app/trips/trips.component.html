@@ -1,58 +1,64 @@
 <div class="container mx-auto p-6">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let tripWithInfo of trips"
-         [ngClass]="{
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let tripWithInfo of trips"
+             [ngClass]="{
            'border-green-500': tripWithInfo.trip.price === maxPrice,
            'border-red-500': tripWithInfo.trip.price === minPrice
          }"
-         class="max-w-sm rounded overflow-hidden shadow-lg border-2">
-      <img class="w-32 h-32 object-cover rounded-full mx-auto mt-4" [src]="tripWithInfo.trip.image" alt="Zdjęcie wycieczki">
-      <div class="px-6 py-4">
-        <div class="font-bold text-xl mb-2">{{ tripWithInfo.trip.name | uppercase  }}</div>
-        <p class="text-gray-700 text-base">
-          {{ tripWithInfo.trip.description }}
-        </p>
-      </div>
-      <div class="px-6 pt-4 pb-2">
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tripWithInfo.trip.country | uppercase }}</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tripWithInfo.trip.startDate | date }} - {{ tripWithInfo.trip.endDate | date }}</span>
-        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tripWithInfo.trip.price | currency:currency }}</span>
+             class="max-w-sm rounded overflow-hidden shadow-lg border-2">
+            <img class="w-32 h-32 object-cover rounded-full mx-auto mt-4" [src]="tripWithInfo.trip.image"
+                 alt="Zdjęcie wycieczki">
+            <div class="px-6 py-4">
+                <div class="font-bold text-xl mb-2">{{ tripWithInfo.trip.name | uppercase  }}</div>
+                <p class="text-gray-700 text-base">
+                    {{ tripWithInfo.trip.description }}
+                </p>
+            </div>
+            <div class="px-6 pt-4 pb-2">
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tripWithInfo.trip.country | uppercase }}</span>
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tripWithInfo.trip.startDate | date }}
+                    - {{ tripWithInfo.trip.endDate | date }}</span>
+                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ tripWithInfo.trip.price | currency:currency }}</span>
 
-      </div>
-      <div class="flex justify-center">
-        <p class="text-gray-700 text-base pb-2">
-          Dostępne miejsca: <span [ngClass]="{'text-red-500': (tripWithInfo.trip.availableSeats - tripWithInfo.placesInBasket) <= 3}">
+            </div>
+            <div class="flex justify-center">
+                <p class="text-gray-700 text-base pb-2">
+                    Dostępne miejsca: <span
+                        [ngClass]="{'text-red-500': (tripWithInfo.trip.availableSeats - tripWithInfo.placesInBasket) <= 3}">
           {{ (tripWithInfo.trip.availableSeats - tripWithInfo.placesInBasket) }}
         </span>
-        </p>
-      </div>
-      <div class="flex justify-center">
-        <p class="text-gray-700 text-base pb-2">
-          W koszyku: <span class="text-white" [ngClass]="{'bg-red-500': tripWithInfo.placesInBasket <= 10, 'bg-green-500': tripWithInfo.placesInBasket > 10}">
+                </p>
+            </div>
+            <div class="flex justify-center">
+                <p class="text-gray-700 text-base pb-2">
+                    W koszyku: <span class="text-white"
+                                     [ngClass]="{'bg-red-500': tripWithInfo.placesInBasket <= 10, 'bg-green-500': tripWithInfo.placesInBasket > 10}">
             {{ tripWithInfo.placesInBasket }}
         </span>
-        </p>
-      </div>
+                </p>
+            </div>
 
-      <div class="flex justify-center items-center pb-2 ">
-        <button (click)="book(tripWithInfo.trip)"
-                [hidden]="(tripWithInfo.trip.availableSeats - tripWithInfo.placesInBasket) === 0"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3">
-          +
-        </button>
-        <button (click)="cancel(tripWithInfo.trip)"
-                [disabled]="tripWithInfo.placesInBasket === 0"
-                [hidden]="tripWithInfo.trip.availableSeats === 0"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
-          -
-        </button>
-      </div>
+            <div class="flex justify-center items-center pb-2 ">
+                <button (click)="book(tripWithInfo.trip)"
+                        [hidden]="(tripWithInfo.trip.availableSeats - tripWithInfo.placesInBasket) === 0"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-3">
+                    +
+                </button>
+                <button (click)="cancel(tripWithInfo.trip)"
+                        [disabled]="tripWithInfo.placesInBasket === 0"
+                        [hidden]="tripWithInfo.trip.availableSeats === 0"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
+                    -
+                </button>
+            </div>
 
-      <div class="flex justify-center items-center pb-2">
-        <button (click)="deleteTrip(tripWithInfo.trip)"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-          Usuń
-        </button>
-      </div>
-</div>
+            <div class="flex justify-center items-center pb-2">
+                <button (click)="deleteTrip(tripWithInfo.trip)"
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Usuń
+                </button>
+            </div>
+        </div>
+    </div>
+    <app-trip-rating></app-trip-rating>
 </div>
