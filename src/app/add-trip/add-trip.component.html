@@ -1,0 +1,79 @@
+<form [formGroup]="tripForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto mt-10 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <!-- Pole nazwy wycieczki -->
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Nazwa wycieczki</label>
+        <input type="text" id="name" formControlName="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <div *ngIf="shouldShowError(nameFormControl)" class="text-red-500 text-xs italic">
+            Nazwa wycieczki jest wymagana.
+        </div>
+    </div>
+
+    <!-- Pole kraju -->
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="country">Kraj</label>
+        <input type="text" id="country" formControlName="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <div *ngIf="shouldShowError(countryFormControl)" class="text-red-500 text-xs italic">
+            Nazwa kraju jest wymagana.
+        </div>
+    </div>
+
+    <!-- Pola daty startu i końca -->
+    <div class="grid grid-cols-2 gap-4 mb-4">
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="startDate">Data rozpoczęcia</label>
+            <input type="date" id="startDate" formControlName="startDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <div *ngIf="shouldShowError(startDateFormControl)" class="text-red-500 text-xs italic">
+                Data rozpoczęcia jest wymagana.
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="endDate">Data zakończenia</label>
+            <input type="date" id="endDate" formControlName="endDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <div *ngIf="shouldShowError(endDateFormControl)" class="text-red-500 text-xs italic">
+                Data zakończenia jest wymagana.
+            </div>
+        </div>
+    </div>
+
+    <!-- Pole ceny -->
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="price">Cena</label>
+        <input type="number" id="price" formControlName="price" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <div *ngIf="shouldShowError(priceFormControl)" class="text-red-500 text-xs italic">
+            Cena jest wymagana.
+        </div>
+    </div>
+
+    <!-- Pole dostępnych miejsc -->
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="availableSeats">Dostępne miejsca</label>
+        <input type="number" id="availableSeats" formControlName="availableSeats" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <div *ngIf="shouldShowError(availableSeatsFormControl)" class="text-red-500 text-xs italic">
+            Liczba dostępnych miejsc wymagana.
+        </div>
+    </div>
+
+    <!-- Pole opisu -->
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Opis</label>
+        <textarea id="description" formControlName="description" rows="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        <div *ngIf="shouldShowError(descriptionFormControl)" class="text-red-500 text-xs italic">
+            Opis jest wymagany.
+        </div>
+    </div>
+
+    <!-- Pole obrazu (link do zdjęcia) -->
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="image">Link do obrazu</label>
+        <input type="text" id="image" formControlName="image" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <div *ngIf="shouldShowError(imageFormControl)" class="text-red-500 text-xs italic">
+            Zdjęcie jest wymagane.
+        </div>
+    </div>
+
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Dodaj wycieczkę
+        </button>
+    </div>
+</form>
