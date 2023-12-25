@@ -1,0 +1,49 @@
+<form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Kraj</label>
+        <div class="flex flex-wrap">
+            <label class="inline-flex items-center mr-2 mb-2" *ngFor="let country of availableCountries">
+                <input type="checkbox" class="form-checkbox" [value]="country" (change)="onCountryChange(country, $event)">
+                <span class="ml-2 text-gray-700">{{ country }}</span>
+            </label>
+        </div>
+    </div>
+
+
+    <div class="mb-4">
+        <label for="minDate" class="block text-gray-700 text-sm font-bold mb-2">Data od</label>
+        <input type="date" id="minDate" formControlName="minDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+    <div class="mb-4">
+        <label for="maxDate" class="block text-gray-700 text-sm font-bold mb-2">Data do</label>
+        <input type="date" id="maxDate" formControlName="maxDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+
+    <div class="mb-4">
+        <label for="minPrice" class="block text-gray-700 text-sm font-bold mb-2">Cena od</label>
+        <input type="number" id="minPrice" formControlName="minPrice" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+    <div class="mb-4">
+        <label for="maxPrice" class="block text-gray-700 text-sm font-bold mb-2">Cena do</label>
+        <input type="number" id="maxPrice" formControlName="maxPrice" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+    <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Ocena</label>
+        <div class="flex flex-wrap">
+            <label class="inline-flex items-center mr-2 mb-2" *ngFor="let rating of availableRatings">
+                <input type="checkbox" class="form-checkbox" [value]="rating" (change)="onRatingChange(rating, $event)">
+                <span class="ml-2 text-gray-700">{{ rating }} Gwiazdki</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="flex items-center justify-between">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Zastosuj filtry
+        </button>
+    </div></form>

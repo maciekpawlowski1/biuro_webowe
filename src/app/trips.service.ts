@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable} from "rxjs";
+import {BehaviorSubject, combineLatest, filter, map, Observable} from "rxjs";
 import {Trip} from "./Trip";
 import {HttpClient} from "@angular/common/http";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
 import {Currency} from "./Currency";
+import {TripFilters} from "./TripFilters";
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +26,7 @@ export class TripsService {
         return this.tripsSubject.asObservable()
     }
 
-    getTripsWithBasketInfo(): Observable<TripWithBasketInfo[]> {
+    getTripsWithBasketInfo(filters: TripFilters | null): Observable<TripWithBasketInfo[]> {
         this.fetchTrips()
         return combineLatest([this.tripsSubject, this.selectedTripsIdSubject]).pipe(
             map(([trips, selectedIds]) => {
@@ -36,19 +37,38 @@ export class TripsService {
                     }
                     return tripWithInfo
                 })
+            }),
+            map(trips => {
+                if (filters === null) {
+                    return trips
+                } else {
+                    return trips.filter(trip => {
+                        let countryOk = filters.country.length === 0 || filters.country.includes(trip.trip.country);
+
+                        let minDateOk = filters.minDate.length === 0 || new Date(trip.trip.startDate) >= new Date(filters.minDate);
+
+                        let maxDateOk = filters.maxDate.length === 0 || new Date(trip.trip.endDate) <= new Date(filters.maxDate);
+
+                        let minPriceOk = filters.minPrice === null || trip.trip.price >= filters.minPrice;
+
+                        let maxPriceOk = filters.maxPrice === null || trip.trip.price <= filters.maxPrice;
+
+                        let ratingOk = filters.rating.length === 0 || filters.rating.includes(trip.trip.rating);
+
+                        return countryOk && minDateOk && maxDateOk && minPriceOk && maxPriceOk && ratingOk;;
+                    });
+                }
             })
         )
     }
 
     putTripInTheBasket(trip: Trip) {
-        console.log('Adding trip to basket')
         const current = [...this.selectedTripsIdSubject.getValue()]
         current.push(trip.id)
         this.selectedTripsIdSubject.next(current)
     }
 
     removeTripFromTheBasket(trip: Trip) {
-        console.log('Removing trip from basket')
         const current = [...this.selectedTripsIdSubject.getValue()]
         const index = current.indexOf(trip.id)
         if (index !== -1) {
@@ -77,8 +97,7 @@ export class TripsService {
             const indexInBasket = currentSelectedTrips.indexOf(trip.id)
             if (indexInBasket != -1) {
                 currentSelectedTrips.splice(indexInBasket, 1)
-            }
-            else {
+            } else {
                 break
             }
         }

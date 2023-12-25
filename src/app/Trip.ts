@@ -8,4 +8,5 @@ export interface Trip {
   availableSeats: number;
   description: string;
   image: string;
+  rating: number;
 }
