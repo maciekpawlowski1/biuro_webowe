@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, filter, map, Observable} from "rxjs";
+import {BehaviorSubject, combineLatest, map, Observable} from "rxjs";
 import {Trip} from "./Trip";
 import {HttpClient} from "@angular/common/http";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
@@ -27,7 +27,10 @@ export class TripsService {
     }
 
     getTripsWithBasketInfo(filters: TripFilters | null): Observable<TripWithBasketInfo[]> {
-        this.fetchTrips()
+        const current = this.tripsSubject.getValue()
+        if (current.length == 0) {
+            this.fetchTrips()
+        }
         return combineLatest([this.tripsSubject, this.selectedTripsIdSubject]).pipe(
             map(([trips, selectedIds]) => {
                 return trips.map(trip => {
@@ -42,24 +45,37 @@ export class TripsService {
                 if (filters === null) {
                     return trips
                 } else {
-                    return trips.filter(trip => {
-                        let countryOk = filters.country.length === 0 || filters.country.includes(trip.trip.country);
-
-                        let minDateOk = filters.minDate.length === 0 || new Date(trip.trip.startDate) >= new Date(filters.minDate);
-
-                        let maxDateOk = filters.maxDate.length === 0 || new Date(trip.trip.endDate) <= new Date(filters.maxDate);
-
-                        let minPriceOk = filters.minPrice === null || trip.trip.price >= filters.minPrice;
-
-                        let maxPriceOk = filters.maxPrice === null || trip.trip.price <= filters.maxPrice;
-
-                        let ratingOk = filters.rating.length === 0 || filters.rating.includes(trip.trip.rating);
-
-                        return countryOk && minDateOk && maxDateOk && minPriceOk && maxPriceOk && ratingOk;;
-                    });
+                    return this.filterTrips(trips, filters);
                 }
             })
         )
+    }
+
+    getCountOfTripsForGivenFilter(filters: TripFilters): Observable<number> {
+        return this.getTripsWithBasketInfo(filters).pipe(
+            map(trips => {
+                    return trips.length
+                }
+            ),
+        )
+    }
+
+    private filterTrips(trips: TripWithBasketInfo[], filters: TripFilters): TripWithBasketInfo[] {
+        return trips.filter(trip => {
+            let countryOk = filters.country.length === 0 || filters.country.includes(trip.trip.country);
+
+            let minDateOk = filters.minDate.length === 0 || new Date(trip.trip.startDate) >= new Date(filters.minDate);
+
+            let maxDateOk = filters.maxDate.length === 0 || new Date(trip.trip.endDate) <= new Date(filters.maxDate);
+
+            let minPriceOk = filters.minPrice === null || trip.trip.price >= filters.minPrice;
+
+            let maxPriceOk = filters.maxPrice === null || trip.trip.price <= filters.maxPrice;
+
+            let ratingOk = filters.rating.length === 0 || filters.rating.includes(trip.trip.rating);
+
+            return countryOk && minDateOk && maxDateOk && minPriceOk && maxPriceOk && ratingOk;
+        });
     }
 
     putTripInTheBasket(trip: Trip) {
