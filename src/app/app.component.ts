@@ -6,7 +6,7 @@ import {CurrencySelectorComponent} from "./currency-selector/currency-selector.c
 @Component({
   selector: 'app-root',
   standalone: true,
-    imports: [CommonModule, RouterOutlet, CurrencySelectorComponent],
+  imports: [CommonModule, RouterOutlet, CurrencySelectorComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

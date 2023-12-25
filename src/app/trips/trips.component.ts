@@ -7,6 +7,7 @@ import {CurrencyPipe} from "../currency.pipe";
 import {combineLatest} from "rxjs";
 import {Currency} from "../Currency";
 import {TripRatingComponent} from "../trip-rating/trip-rating.component";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-trips',
@@ -19,6 +20,7 @@ import {TripRatingComponent} from "../trip-rating/trip-rating.component";
     CurrencyPipe,
     CurrencyPipe,
     TripRatingComponent,
+    ModalComponent,
   ],
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.css'
@@ -27,6 +29,7 @@ export class TripsComponent implements OnInit{
 
   constructor(private tripsService: TripsService) {}
 
+  showFiltersModal = false
   trips: TripWithBasketInfo[] = []
   maxPrice: number | undefined
   minPrice: number | undefined
