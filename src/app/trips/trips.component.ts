@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Trip} from "../Trip";
 import {TripsService} from "../trips.service";
-import {DatePipe, NgClass, NgForOf, UpperCasePipe} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf, UpperCasePipe} from "@angular/common";
 import {TripWithBasketInfo} from "../TripWithBasketInfo";
 import {CurrencyPipe} from "../currency.pipe";
-import {BehaviorSubject, combineLatest, flatMap, Observable, switchMap} from "rxjs";
+import {BehaviorSubject, combineLatest, Observable, switchMap} from "rxjs";
 import {Currency} from "../Currency";
 import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 import {ModalComponent} from "../modal/modal.component";
@@ -24,6 +24,7 @@ import {TripFilters} from "../TripFilters";
     TripRatingComponent,
     ModalComponent,
     TripFiltersComponent,
+    NgIf,
   ],
   templateUrl: './trips.component.html',
   styleUrl: './trips.component.css'
@@ -32,7 +33,7 @@ export class TripsComponent implements OnInit{
 
   constructor(private tripsService: TripsService) {}
 
-  showFiltersModal = true
+  showFiltersModal = false
   filters = new BehaviorSubject<TripFilters | null>(null)
   trips: TripWithBasketInfo[] = []
   maxPrice: number | undefined

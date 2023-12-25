@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {TripFilters} from '../TripFilters';
@@ -18,6 +18,7 @@ import {NgxSliderModule, Options} from "ngx-slider-v2";
     styleUrl: './trip-filters.component.css'
 })
 export class TripFiltersComponent implements OnInit {
+    @Input() initialFilters: TripFilters | null = null
     @Output() onFiltersChange = new EventEmitter<TripFilters>
     filterForm: FormGroup;
 
