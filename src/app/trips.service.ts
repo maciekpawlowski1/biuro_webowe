@@ -76,6 +76,27 @@ export class TripsService {
         )
     }
 
+    getPriceRangeOfTrips(): Promise<number[]> {
+        return firstValueFrom(
+            this.getTrips().pipe(
+                skipWhile(data => {
+                        return data.length == 0;
+                    }
+                ),
+                map(trips => {
+                    const prices = trips.map(trip => {
+                        return trip.price
+                    })
+
+                    const minVal = Math.min(...prices);
+                    const maxVal = Math.max(...prices);
+
+                    return [minVal, maxVal]
+                }),
+            )
+        )
+    }
+
     private filterTrips(trips: TripWithBasketInfo[], filters: TripFilters): TripWithBasketInfo[] {
         return trips.filter(trip => {
             let countryOk = filters.country.length === 0 || filters.country.includes(trip.trip.country);

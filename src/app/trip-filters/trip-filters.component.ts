@@ -2,15 +2,17 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {TripFilters} from '../TripFilters';
-import {switchMap} from "rxjs";
+import {debounceTime, switchMap} from "rxjs";
 import {TripsService} from "../trips.service";
+import {NgxSliderModule, Options} from "ngx-slider-v2";
 
 @Component({
     selector: 'app-trip-filters',
     standalone: true,
     imports: [
         ReactiveFormsModule,
-        NgForOf
+        NgForOf,
+        NgxSliderModule
     ],
     templateUrl: './trip-filters.component.html',
     styleUrl: './trip-filters.component.css'
@@ -24,25 +26,40 @@ export class TripFiltersComponent implements OnInit {
 
     resultsForGivenFilters: number | null = null
 
+    sliderOptions: Options = {
+        floor: 0,
+        ceil: 10000
+    };
+
     constructor(private formBuilder: FormBuilder, private tripsService: TripsService) {
         this.filterForm = this.formBuilder.group({
             country: [[]],
             minDate: [''],
             maxDate: [''],
-            minPrice: [],
-            maxPrice: [],
+            priceRange: [[0, 200]],
             rating: [[]]
         });
     }
 
     ngOnInit(): void {
-        this.tripsService.getCountriesOfTrips().then( data => {
+        this.tripsService.getCountriesOfTrips().then(data => {
             this.availableCountries = data
         })
 
+        this.tripsService.getPriceRangeOfTrips().then(data => {
+                this.sliderOptions = {
+                    floor: data[0],
+                    ceil: data[1]
+                }
+                this.filterForm.patchValue({priceRange: data})
+            }
+        )
+
         this.filterForm.valueChanges.pipe(
+            debounceTime(50),
             switchMap((currentFilters: TripFilters, index: number) => {
-                    return this.tripsService.getCountOfTripsForGivenFilter(currentFilters)
+                    const filters = this.formToFilters(currentFilters)
+                    return this.tripsService.getCountOfTripsForGivenFilter(filters)
                 }
             )
         ).subscribe(count => {
@@ -77,7 +94,20 @@ export class TripFiltersComponent implements OnInit {
     }
 
     applyFilters() {
-        //console.log(this.filterForm.value);
-        this.onFiltersChange.emit(this.filterForm.value)
+        const currentFilters = this.filterForm.value
+        this.onFiltersChange.emit(
+            this.formToFilters(currentFilters)
+        )
+    }
+
+    private formToFilters(currentFilters: any): TripFilters {
+        return {
+            country: currentFilters.country,
+            minDate: currentFilters.minDate,
+            maxDate: currentFilters.maxDate,
+            minPrice: currentFilters.priceRange[0],
+            maxPrice: currentFilters.priceRange[1],
+            rating: currentFilters.rating,
+        }
     }
 }
