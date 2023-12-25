@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable} from "rxjs";
+import {BehaviorSubject, combineLatest, firstValueFrom, map, Observable, skip, skipWhile} from "rxjs";
 import {Trip} from "./Trip";
 import {HttpClient} from "@angular/common/http";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
@@ -57,6 +57,22 @@ export class TripsService {
                     return trips.length
                 }
             ),
+        )
+    }
+
+    getCountriesOfTrips(): Promise<string[]> {
+        return firstValueFrom(
+            this.getTrips().pipe(
+                map(trips => {
+                    return trips.map(trip => {
+                        return trip.country
+                    })
+                }),
+                skipWhile(data => {
+                        return data.length == 0;
+                    }
+                )
+            )
         )
     }
 

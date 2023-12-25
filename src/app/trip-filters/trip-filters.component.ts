@@ -19,7 +19,7 @@ export class TripFiltersComponent implements OnInit {
     @Output() onFiltersChange = new EventEmitter<TripFilters>
     filterForm: FormGroup;
 
-    availableCountries = ['Polska', 'Niemcy', 'Włochy'];
+    availableCountries: string[] | null = null;
     availableRatings = [1, 2, 3, 4, 5];
 
     resultsForGivenFilters: number | null = null
@@ -36,6 +36,10 @@ export class TripFiltersComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.tripsService.getCountriesOfTrips().then( data => {
+            this.availableCountries = data
+        })
+
         this.filterForm.valueChanges.pipe(
             switchMap((currentFilters: TripFilters, index: number) => {
                     return this.tripsService.getCountOfTripsForGivenFilter(currentFilters)
