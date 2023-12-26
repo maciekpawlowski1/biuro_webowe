@@ -1,0 +1,23 @@
+<!-- shopping-cart.component.html -->
+<div class="container mx-auto p-6 bg-white rounded shadow">
+    <div class="divide-y divide-gray-200">
+        <div *ngFor="let trip of tripsInBasket" class="py-4 flex justify-between items-center">
+            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" [checked]="!unselectedTripsSubject.getValue().has(trip.trip.id)" (change)="onTripSelectionChange(trip.trip.id, $event)">
+            <span class="font-semibold text-gray-700">{{ trip.trip.name }}</span>
+            <span class="text-gray-500">{{ trip.trip.price * trip.placesInBasket | currency: currency }}</span>
+            <div class="flex items-center">
+                <button (click)="decrementQuantity(trip.trip)" class="bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded hover:bg-gray-400">-</button>
+                <p>{{trip.placesInBasket}}</p>
+                <button (click)="incrementQuantity(trip.trip)" class="bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded hover:bg-gray-400">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-4 font-bold text-xl">
+        Suma: <span class="text-green-500">{{ totalPrice != null ? (totalPrice | currency: currency) : "" }}</span>
+    </div>
+
+    <button (click)="purchaseSelectedItems()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Kup wycieczki
+    </button>
+</div>

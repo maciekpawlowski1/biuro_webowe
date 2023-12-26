@@ -1,4 +1,4 @@
-<div class="flex items-center bg-white shadow-md p-4 rounded-lg w-max">
+<div (click)="onCartClick()" class="flex items-center bg-white shadow-md p-4 rounded-lg w-max cursor-pointer">
     <fa-icon [icon]="faCartShopping" class="text-blue-500 text-xl mr-3"/>
     <span class="text-gray-700 mr-2">{{ totalTrips }} w koszyku</span>
     <span class="text-gray-700 font-bold">Suma: {{ totalPrice != null ? (totalPrice | currency: currency) : "" }}</span>

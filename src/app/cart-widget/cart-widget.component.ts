@@ -5,6 +5,7 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {TripsService} from "../trips.service";
 import {combineLatest} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-cart-widget',
@@ -19,22 +20,26 @@ import {combineLatest} from "rxjs";
 export class CartWidgetComponent implements OnInit {
     totalTrips: number | null = null
     totalPrice: number | null = null
-    currency = Currency.PLN
+    currency: Currency = Currency.PLN
     protected readonly faCartShopping = faCartShopping;
 
-    constructor(private tripsService: TripsService) {
+    constructor(private tripsService: TripsService, private router: Router) {}
+
+    ngOnInit(): void {
         combineLatest(
             [
-                tripsService.getSelectedTripsCount(),
-                tripsService.getSelectedTripsValue(),
+                this.tripsService.getSelectedTripsCount(),
+                this.tripsService.getSelectedTripsValue(),
+                this.tripsService.getCurrentCurrency(),
             ]
-        ).subscribe(([tripsCount, totalPrice]) => {
+        ).subscribe(([tripsCount, totalPrice, currency]) => {
             this.totalPrice = totalPrice
             this.totalTrips = tripsCount
+            this.currency = currency
         })
     }
 
-    ngOnInit(): void {
-
+    onCartClick() {
+        this.router.navigate(['/cart']);
     }
 }

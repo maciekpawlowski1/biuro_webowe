@@ -34,30 +34,23 @@ export class TripsService {
     }
 
     getSelectedTripsValue(): Observable<number> {
-        return combineLatest(
-            [
-                this.selectedTripsIdSubject.asObservable(),
-                this.tripsSubject.asObservable(),
-            ]
-        )
+        return this.getSelectedTrips()
             .pipe(
-                map(([selectedIds, trips]) => {
-                    const countMap = new Map<string, number>();
-                    selectedIds.forEach(id => {
-                        if (countMap.has(id)) {
-                            // @ts-ignore
-                            countMap.set(id, countMap.get(id) + 1);
-                        } else {
-                            countMap.set(id, 1);
-                        }
-                    });
-
+                map(trips => {
                     return trips.reduce((total, trip) => {
-                        const count = countMap.get(trip.id) || 0;
-                        return total + (trip.price * count);
+                        const count = trip.placesInBasket;
+                        return total + (trip.trip.price * count);
                     }, 0);
                 })
             )
+    }
+
+    getSelectedTrips(): Observable<TripWithBasketInfo[]> {
+        return this.getTripsWithBasketInfo(null).pipe(
+            map( data => {
+                return data.filter(tripWithCount => tripWithCount.placesInBasket > 0)
+            })
+        )
     }
 
     getTripsWithBasketInfo(filters: TripFilters | null): Observable<TripWithBasketInfo[]> {
@@ -202,5 +195,20 @@ export class TripsService {
         const currentTrips = [...this.tripsSubject.getValue()]
         currentTrips.push(trip)
         this.tripsSubject.next(currentTrips)
+    }
+
+    purchaseTrips(tripsToPurchase: TripWithBasketInfo[]) {
+        tripsToPurchase.forEach( trip => {
+            const currentSelectedTrips = [...this.selectedTripsIdSubject.getValue()]
+            while (true) {
+                const indexInBasket = currentSelectedTrips.indexOf(trip.trip.id)
+                if (indexInBasket != -1) {
+                    currentSelectedTrips.splice(indexInBasket, 1)
+                } else {
+                    break
+                }
+            }
+            this.selectedTripsIdSubject.next(currentSelectedTrips)
+        })
     }
 }
