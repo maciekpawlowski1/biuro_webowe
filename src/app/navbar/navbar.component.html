@@ -6,6 +6,12 @@
             <a routerLink="/addTrip" class="hover:text-blue-300">Dodaj Wycieczkę</a>
 <!--            <a routerLink="/purchase-history" class="hover:text-blue-300">Historia Zakupów</a>-->
         </div>
-        <app-cart-widget></app-cart-widget>
+
+        <div class="flex flex-row items-center">
+            <app-currency-selector class="mr-3"></app-currency-selector>
+
+            <app-cart-widget></app-cart-widget>
+        </div>
+
     </div>
 </nav>
