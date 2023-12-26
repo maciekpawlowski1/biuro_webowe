@@ -1,0 +1,28 @@
+<div class="flex flex-col mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-4">{{ trip != null ? trip.trip.name : "" }} - {{ trip != null ? trip.trip.country : "" }}</h2>
+
+  <!-- Mapa -->
+    <div class="map mb-6">
+        <!-- Tutaj umieść mapę lokalizacji -->
+    </div>
+
+    <!-- Opis szczegółowy -->
+    <p class="mb-6">{{ trip != null ? trip.trip.description : "" }}</p>
+
+    <!-- Cena i ocena -->
+    <div class="mb-6">
+        <span class="font-bold">Cena:</span> {{ (trip != null) ? (trip.trip.price | currency:currency) : "" }}
+        <div class="rating">
+            <app-trip-rating></app-trip-rating>
+        </div>
+    </div>
+
+    <!-- Przyciski rezerwacji i rezygnacji -->
+    <div class="buttons mb-6">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="addToBasketTrip()">+</button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="removeFromBasketTrip()">-</button>
+    </div>
+
+    <!-- Link powrotny do listy wycieczek -->
+    <a routerLink="/trips" class="text-blue-600 hover:text-blue-800">Powrót do listy wycieczek</a>
+</div>

@@ -14,7 +14,7 @@
            'border-green-500': tripWithInfo.trip.price === maxPrice,
            'border-red-500': tripWithInfo.trip.price === minPrice
          }"
-             class="max-w-sm rounded overflow-hidden shadow-lg border-2">
+             class="max-w-sm rounded overflow-hidden shadow-lg border-2" (click)="onTripClick(tripWithInfo.trip)">
             <img class="w-32 h-32 object-cover rounded-full mx-auto mt-4" [src]="tripWithInfo.trip.image"
                  alt="Zdjęcie wycieczki">
             <div class="px-6 py-4">
@@ -69,5 +69,4 @@
             </div>
         </div>
     </div>
-    <app-trip-rating></app-trip-rating>
 </div>

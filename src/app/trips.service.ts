@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, firstValueFrom, map, Observable, skip, skipWhile} from "rxjs";
+import {BehaviorSubject, combineLatest, firstValueFrom, map, Observable, skipWhile} from "rxjs";
 import {Trip} from "./Trip";
 import {HttpClient} from "@angular/common/http";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
@@ -210,5 +210,24 @@ export class TripsService {
             }
             this.selectedTripsIdSubject.next(currentSelectedTrips)
         })
+    }
+
+    getTripById(tripId: string | null): Observable<TripWithBasketInfo> {
+        return combineLatest([this.tripsSubject, this.selectedTripsIdSubject])
+            .pipe(
+                map( ([trips, selectedIds]) => {
+                    const trip = trips.find( t => t.id === tripId)
+                    if(trip === undefined) {
+                        throw 1
+                    }
+                    const count = selectedIds.filter( id => id === tripId).length
+                    const result: TripWithBasketInfo = {
+                        trip: trip,
+                        placesInBasket: count
+                    }
+
+                    return result
+                })
+            )
     }
 }

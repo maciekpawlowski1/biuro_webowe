@@ -10,6 +10,7 @@ import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 import {ModalComponent} from "../modal/modal.component";
 import {TripFiltersComponent} from "../trip-filters/trip-filters.component";
 import {TripFilters} from "../TripFilters";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-trips',
@@ -31,7 +32,7 @@ import {TripFilters} from "../TripFilters";
 })
 export class TripsComponent implements OnInit{
 
-  constructor(private tripsService: TripsService) {}
+  constructor(private tripsService: TripsService, private router: Router) {}
 
   showFiltersModal = false
   filters = new BehaviorSubject<TripFilters | null>(null)
@@ -77,5 +78,9 @@ export class TripsComponent implements OnInit{
           return this.tripsService.getTripsWithBasketInfo(filters)
         })
     );
+  }
+
+  onTripClick(trip: Trip) {
+    this.router.navigate(['trips', trip.id]);
   }
 }
