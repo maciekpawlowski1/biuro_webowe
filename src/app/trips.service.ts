@@ -15,7 +15,7 @@ export class TripsService {
     }
 
     tripsSubject = new BehaviorSubject<Trip[]>([])
-    selectedTripsIdSubject = new BehaviorSubject<String[]>([])
+    selectedTripsIdSubject = new BehaviorSubject<string[]>([])
     currentCurrencySubject = new BehaviorSubject<Currency>(Currency.PLN)
 
     getTrips(): Observable<Trip[]> {
@@ -24,6 +24,40 @@ export class TripsService {
             this.fetchTrips()
         }
         return this.tripsSubject.asObservable()
+    }
+
+    getSelectedTripsCount(): Observable<number> {
+        return this.selectedTripsIdSubject.asObservable()
+            .pipe(
+                map(data => data.length)
+            )
+    }
+
+    getSelectedTripsValue(): Observable<number> {
+        return combineLatest(
+            [
+                this.selectedTripsIdSubject.asObservable(),
+                this.tripsSubject.asObservable(),
+            ]
+        )
+            .pipe(
+                map(([selectedIds, trips]) => {
+                    const countMap = new Map<string, number>();
+                    selectedIds.forEach(id => {
+                        if (countMap.has(id)) {
+                            // @ts-ignore
+                            countMap.set(id, countMap.get(id) + 1);
+                        } else {
+                            countMap.set(id, 1);
+                        }
+                    });
+
+                    return trips.reduce((total, trip) => {
+                        const count = countMap.get(trip.id) || 0;
+                        return total + (trip.price * count);
+                    }, 0);
+                })
+            )
     }
 
     getTripsWithBasketInfo(filters: TripFilters | null): Observable<TripWithBasketInfo[]> {
