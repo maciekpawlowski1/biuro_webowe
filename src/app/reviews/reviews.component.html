@@ -1,0 +1,35 @@
+<div class="container mx-auto p-6">
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="nickname">Nickname</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="nickname" formControlName="nickname">
+      <p class="text-red-500 text-xs italic" *ngIf="reviewForm.get('nickname')?.invalid && reviewForm.get('nickname')?.touched">Nickname is required.</p>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="reviewText">Review</label>
+      <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="reviewText" formControlName="reviewText"></textarea>
+      <p class="text-red-500 text-xs italic" *ngIf="reviewForm.get('reviewText')?.errors?.['required'] && reviewForm.get('reviewText')?.touched">Review is required.</p>
+      <p class="text-red-500 text-xs italic" *ngIf="reviewForm.get('reviewText')?.errors?.['minlength']">Review must be at least 50 characters.</p>
+      <p class="text-red-500 text-xs italic" *ngIf="reviewForm.get('reviewText')?.errors?.['maxlength']">Review must be less than 500 characters.</p>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="purchaseDate">Purchase Date (optional)</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" id="purchaseDate" formControlName="purchaseDate">
+    </div>
+
+    <div class="flex items-center justify-between">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Submit Review</button>
+    </div>
+  </form>
+
+  <div class="mt-6">
+    <div class="font-bold text-xl mb-2">Reviews</div>
+    <div *ngFor="let review of reviews" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <p class="text-gray-700 text-base mb-4"><span class="font-bold">Nickname:</span> {{ review.nickname }}</p>
+      <p class="text-gray-700 text-base mb-4"><span class="font-bold">Review:</span> {{ review.reviewText }}</p>
+      <p class="text-gray-700 text-base" *ngIf="review.purchaseDate"><span class="font-bold">Purchase Date:</span> {{ review.purchaseDate | date }}</p>
+    </div>
+  </div>
+</div>

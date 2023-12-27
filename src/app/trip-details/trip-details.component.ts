@@ -7,6 +7,7 @@ import {switchMap} from "rxjs";
 import {CurrencyPipe} from "../currency.pipe";
 import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 import {NgForOf, NgIf} from "@angular/common";
+import {ReviewsComponent} from "../reviews/reviews.component";
 
 @Component({
   selector: 'app-trip-details',
@@ -16,7 +17,8 @@ import {NgForOf, NgIf} from "@angular/common";
     RouterLink,
     TripRatingComponent,
     NgIf,
-    NgForOf
+    NgForOf,
+    ReviewsComponent
   ],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.css'
