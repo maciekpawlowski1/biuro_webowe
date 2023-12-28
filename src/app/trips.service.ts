@@ -153,7 +153,7 @@ export class TripsService {
         this.tripsSubject.next(data);
     }
 
-    deleteTrip(trip: Trip) {
+    deleteTrip(trip: Trip): Promise<void> {
         const currentSelectedTrips = [...this.selectedTripsIdSubject.getValue()]
         while (true) {
             const indexInBasket = currentSelectedTrips.indexOf(trip.id)
@@ -171,6 +171,8 @@ export class TripsService {
             currentTrips.splice(index, 1)
             this.tripsSubject.next(currentTrips)
         }
+
+        return this.tripsDataProvider.deleteTrip(trip.id)
     }
 
     addTrip(trip: Trip): Promise<void> {
