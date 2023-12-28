@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, firstValueFrom, map, Observable, skipWhile} from "rxjs";
 import {Trip} from "./Trip";
-import {HttpClient} from "@angular/common/http";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
 import {Currency} from "./Currency";
 import {TripFilters} from "./TripFilters";
+import {TripsDataProvider} from "../../trips-data-provider.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class TripsService {
 
-    constructor(private http: HttpClient) {
+    constructor(private tripsDataProvider: TripsDataProvider) {
     }
 
     tripsSubject = new BehaviorSubject<Trip[]>([])
@@ -19,10 +19,6 @@ export class TripsService {
     currentCurrencySubject = new BehaviorSubject<Currency>(Currency.PLN)
 
     getTrips(): Observable<Trip[]> {
-        const current = this.tripsSubject.getValue()
-        if (current.length == 0) {
-            this.fetchTrips()
-        }
         return this.tripsSubject.asObservable()
     }
 
@@ -54,10 +50,6 @@ export class TripsService {
     }
 
     getTripsWithBasketInfo(filters: TripFilters | null): Observable<TripWithBasketInfo[]> {
-        const current = this.tripsSubject.getValue()
-        if (current.length == 0) {
-            this.fetchTrips()
-        }
         return combineLatest([this.tripsSubject, this.selectedTripsIdSubject]).pipe(
             map(([trips, selectedIds]) => {
                 return trips.map(trip => {
@@ -162,7 +154,7 @@ export class TripsService {
     }
 
     fetchTrips(): void {
-        this.http.get<Trip[]>('http://localhost:3000/trips').subscribe(data => {
+        this.tripsDataProvider.getTrips().then(data => {
             this.tripsSubject.next(data)
         })
     }
@@ -212,7 +204,7 @@ export class TripsService {
         })
     }
 
-    getTripById(tripId: string | null): Observable<TripWithBasketInfo> {
+    getTripById(tripId: string): Observable<TripWithBasketInfo> {
         return combineLatest([this.tripsSubject, this.selectedTripsIdSubject])
             .pipe(
                 map( ([trips, selectedIds]) => {

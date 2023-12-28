@@ -39,7 +39,7 @@ export class TripDetailsComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap(params => {
-        const tripId = params.get('id');
+        const tripId = params.get('id')!;
         return this.tripsService.getTripById(tripId)
       })
     ).subscribe(data => this.trip = data)
