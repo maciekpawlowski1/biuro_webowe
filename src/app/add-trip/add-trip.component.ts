@@ -5,19 +5,22 @@ import {Trip} from "../Trip";
 import {TripsService} from "../trips.service";
 import * as uuid from 'uuid';
 import {Router} from "@angular/router";
+import {SpinnerComponent} from "../spinner/spinner.component";
 
 @Component({
   selector: 'app-add-trip',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    SpinnerComponent
   ],
   templateUrl: './add-trip.component.html',
   styleUrl: './add-trip.component.css'
 })
 export class AddTripComponent implements OnInit {
 
+  isLoading = false
   nameFormControl = new FormControl(null, Validators.required);
   countryFormControl = new FormControl(null, Validators.required);
   startDateFormControl = new FormControl(null, Validators.required);
@@ -26,7 +29,6 @@ export class AddTripComponent implements OnInit {
   availableSeatsFormControl = new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)]);
   descriptionFormControl = new FormControl(null, Validators.required);
   imageFormControl = new FormControl(null, Validators.required);
-  wasContinueClicked = false
 
   tripForm: FormGroup = new FormGroup({
     'name': this.nameFormControl,
@@ -47,18 +49,24 @@ export class AddTripComponent implements OnInit {
   }
 
   onSubmit() {
-    this.wasContinueClicked = true;
-    if(this.tripForm.valid) {
+    this.tripForm.markAllAsTouched()
+    if(this.tripForm.valid && !this.isLoading) {
       const newTrip: Trip = this.tripForm.value
 
       newTrip.id = uuid.v4()
-      this.tripsService.addTrip(newTrip)
 
-      this.router.navigate(['/trips']);
+      this.isLoading = true
+      this.tripsService.addTrip(newTrip)
+          .then( () => {
+            this.router.navigate(['/trips']);
+          })
+          .finally( () => {
+            this.isLoading = false
+          })
     }
   }
 
   shouldShowError(formControl: FormControl): boolean {
-    return formControl.invalid && (formControl.dirty || formControl.touched || this.wasContinueClicked)
+    return formControl.invalid && (formControl.dirty || formControl.touched)
   }
 }

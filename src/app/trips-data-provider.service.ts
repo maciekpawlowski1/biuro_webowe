@@ -21,6 +21,6 @@ export class TripsDataProvider {
   }
 
   addTrip(trip: Trip): Promise<void> {
-    return firstValueFrom(this.http.post<void>(this.apiUrl, JSON.stringify(trip)))
+    return firstValueFrom(this.http.post<void>(this.apiUrl, trip))
   }
 }

@@ -148,10 +148,9 @@ export class TripsService {
     }
 
 
-    fetchTrips(): void {
-        this.tripsDataProvider.getTrips().then(data => {
-            this.tripsSubject.next(data)
-        })
+    async fetchTrips(): Promise<void> {
+        const data = await this.tripsDataProvider.getTrips();
+        this.tripsSubject.next(data);
     }
 
     deleteTrip(trip: Trip) {
@@ -174,10 +173,13 @@ export class TripsService {
         }
     }
 
-    addTrip(trip: Trip) {
-        const currentTrips = [...this.tripsSubject.getValue()]
-        currentTrips.push(trip)
-        this.tripsSubject.next(currentTrips)
+    addTrip(trip: Trip): Promise<void> {
+        return this.tripsDataProvider.addTrip(trip)
+            .then( data => {
+                const currentTrips = [...this.tripsSubject.getValue()]
+                currentTrips.push(trip)
+                this.tripsSubject.next(currentTrips)
+            })
     }
 
     purchaseTrips(tripsToPurchase: TripWithBasketInfo[]) {
