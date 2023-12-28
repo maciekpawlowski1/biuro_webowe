@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatest, firstValueFrom, map, Observable, skipWhile} from "rxjs";
 import {Trip} from "./Trip";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
-import {Currency} from "./Currency";
 import {TripFilters} from "./TripFilters";
 import {TripsDataProvider} from "../../trips-data-provider.service";
 
@@ -16,7 +15,6 @@ export class TripsService {
 
     tripsSubject = new BehaviorSubject<Trip[]>([])
     selectedTripsIdSubject = new BehaviorSubject<string[]>([])
-    currentCurrencySubject = new BehaviorSubject<Currency>(Currency.PLN)
 
     getTrips(): Observable<Trip[]> {
         return this.tripsSubject.asObservable()
@@ -43,7 +41,7 @@ export class TripsService {
 
     getSelectedTrips(): Observable<TripWithBasketInfo[]> {
         return this.getTripsWithBasketInfo(null).pipe(
-            map( data => {
+            map(data => {
                 return data.filter(tripWithCount => tripWithCount.placesInBasket > 0)
             })
         )
@@ -149,18 +147,11 @@ export class TripsService {
         this.selectedTripsIdSubject.next(current)
     }
 
-    getCurrentCurrency(): Observable<Currency> {
-        return this.currentCurrencySubject.asObservable()
-    }
 
     fetchTrips(): void {
         this.tripsDataProvider.getTrips().then(data => {
             this.tripsSubject.next(data)
         })
-    }
-
-    changeCurrency(newCurrency: Currency) {
-        this.currentCurrencySubject.next(newCurrency)
     }
 
     deleteTrip(trip: Trip) {
@@ -190,7 +181,7 @@ export class TripsService {
     }
 
     purchaseTrips(tripsToPurchase: TripWithBasketInfo[]) {
-        tripsToPurchase.forEach( trip => {
+        tripsToPurchase.forEach(trip => {
             const currentSelectedTrips = [...this.selectedTripsIdSubject.getValue()]
             while (true) {
                 const indexInBasket = currentSelectedTrips.indexOf(trip.trip.id)
@@ -207,12 +198,12 @@ export class TripsService {
     getTripById(tripId: string): Observable<TripWithBasketInfo> {
         return combineLatest([this.tripsSubject, this.selectedTripsIdSubject])
             .pipe(
-                map( ([trips, selectedIds]) => {
-                    const trip = trips.find( t => t.id === tripId)
-                    if(trip === undefined) {
+                map(([trips, selectedIds]) => {
+                    const trip = trips.find(t => t.id === tripId)
+                    if (trip === undefined) {
                         throw 1
                     }
-                    const count = selectedIds.filter( id => id === tripId).length
+                    const count = selectedIds.filter(id => id === tripId).length
                     const result: TripWithBasketInfo = {
                         trip: trip,
                         placesInBasket: count

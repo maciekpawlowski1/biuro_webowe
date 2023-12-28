@@ -8,6 +8,7 @@ import {CurrencyPipe} from "../currency.pipe";
 import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {ReviewsComponent} from "../reviews/reviews.component";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-trip-details',
@@ -33,7 +34,11 @@ export class TripDetailsComponent implements OnInit {
 
   currency: Currency = Currency.PLN
 
-  constructor(private route: ActivatedRoute, private tripsService: TripsService) {
+  constructor(
+      private route: ActivatedRoute,
+      private tripsService: TripsService,
+      private currencyService: CurrencyService,
+  ) {
   }
 
   ngOnInit() {
@@ -44,7 +49,7 @@ export class TripDetailsComponent implements OnInit {
       })
     ).subscribe(data => this.trip = data)
 
-    this.tripsService.getCurrentCurrency()
+    this.currencyService.getCurrentCurrency()
       .subscribe(data => this.currency = data)
   }
 

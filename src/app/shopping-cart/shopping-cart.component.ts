@@ -8,6 +8,7 @@ import {FormsModule} from "@angular/forms";
 import {Trip} from "../Trip";
 import {BehaviorSubject, map} from "rxjs";
 import {combineLatest} from "rxjs";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-shopping-cart',
@@ -22,7 +23,7 @@ import {combineLatest} from "rxjs";
 })
 export class ShoppingCartComponent {
 
-  constructor(private tripsService: TripsService) {}
+  constructor(private tripsService: TripsService, private currencyService: CurrencyService) {}
 
   tripsInBasket: TripWithBasketInfo[] = []
   unselectedTripsSubject: BehaviorSubject<Set<string>> = new BehaviorSubject<Set<string>>(new Set<string>())
@@ -51,7 +52,7 @@ export class ShoppingCartComponent {
     )
         .subscribe( data => this.totalPrice = data)
 
-    this.tripsService.getCurrentCurrency()
+    this.currencyService.getCurrentCurrency()
         .subscribe( data => this.currency = data)
   }
 

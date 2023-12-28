@@ -11,6 +11,7 @@ import {ModalComponent} from "../modal/modal.component";
 import {TripFiltersComponent} from "../trip-filters/trip-filters.component";
 import {TripFilters} from "../TripFilters";
 import {Router} from "@angular/router";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-trips',
@@ -32,7 +33,11 @@ import {Router} from "@angular/router";
 })
 export class TripsComponent implements OnInit{
 
-  constructor(private tripsService: TripsService, private router: Router) {}
+  constructor(
+      private tripsService: TripsService,
+      private currencyService: CurrencyService,
+      private router: Router,
+  ) {}
 
   showFiltersModal = false
   filters = new BehaviorSubject<TripFilters | null>(null)
@@ -55,7 +60,7 @@ export class TripsComponent implements OnInit{
 
   ngOnInit(): void {
 
-    combineLatest([this.getFilteredTrips(), this.tripsService.getCurrentCurrency()])
+    combineLatest([this.getFilteredTrips(), this.currencyService.getCurrentCurrency()])
         .subscribe(([newTrips, newCurrency]) => {
       // console.log(JSON.stringify(data))
       this.trips = newTrips

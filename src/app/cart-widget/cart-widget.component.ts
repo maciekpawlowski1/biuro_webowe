@@ -6,6 +6,7 @@ import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import {TripsService} from "../trips.service";
 import {combineLatest} from "rxjs";
 import {Router} from "@angular/router";
+import {CurrencyService} from "../currency.service";
 
 @Component({
     selector: 'app-cart-widget',
@@ -23,14 +24,18 @@ export class CartWidgetComponent implements OnInit {
     currency: Currency = Currency.PLN
     protected readonly faCartShopping = faCartShopping;
 
-    constructor(private tripsService: TripsService, private router: Router) {}
+    constructor(
+        private tripsService: TripsService,
+        private currencyService: CurrencyService,
+        private router: Router,
+    ) {}
 
     ngOnInit(): void {
         combineLatest(
             [
                 this.tripsService.getSelectedTripsCount(),
                 this.tripsService.getSelectedTripsValue(),
-                this.tripsService.getCurrentCurrency(),
+                this.currencyService.getCurrentCurrency(),
             ]
         ).subscribe(([tripsCount, totalPrice, currency]) => {
             this.totalPrice = totalPrice

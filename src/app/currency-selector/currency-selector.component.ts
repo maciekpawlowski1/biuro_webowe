@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {TripsService} from "../trips.service";
 import {Currency} from "../Currency";
 import {FormsModule} from "@angular/forms";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-currency-selector',
@@ -15,7 +16,7 @@ import {FormsModule} from "@angular/forms";
 export class CurrencySelectorComponent {
   newCurrency: String = "PLN";
 
-  constructor(private tripsService: TripsService) {
+  constructor(private currencyService: CurrencyService) {
   }
   changeCurrency() {
     let currencyToChange;
@@ -34,6 +35,6 @@ export class CurrencySelectorComponent {
         currencyToChange = Currency.PLN;
     }
 
-    this.tripsService.changeCurrency(currencyToChange);
+    this.currencyService.changeCurrency(currencyToChange);
   }
 }
