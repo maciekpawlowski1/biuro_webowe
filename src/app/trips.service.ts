@@ -3,7 +3,7 @@ import {BehaviorSubject, combineLatest, firstValueFrom, map, Observable, skipWhi
 import {Trip} from "./Trip";
 import {TripWithBasketInfo} from "./TripWithBasketInfo";
 import {TripFilters} from "./TripFilters";
-import {TripsDataProvider} from "../../trips-data-provider.service";
+import {TripsDataProvider} from "./trips-data-provider.service";
 
 @Injectable({
     providedIn: 'root'

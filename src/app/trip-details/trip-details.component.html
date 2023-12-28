@@ -23,7 +23,7 @@
         <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="removeFromBasketTrip()">-</button>
     </div>
 
-  <app-reviews></app-reviews>
+  <app-reviews [tripId]="trip?.trip?.id!"></app-reviews>
 
     <!-- Link powrotny do listy wycieczek -->
     <a routerLink="/trips" class="text-blue-600 hover:text-blue-800">Powrót do listy wycieczek</a>
