@@ -1,0 +1,8 @@
+<div class="flex justify-center items-center space-x-3">
+  <!--    <label for="currency" class="text-lg font-medium">Waluta:</label>-->
+  <select id="currency" class="form-select p-2 border border-gray-300 rounded text-black"
+          (change)="changeSource()" [(ngModel)]="newSource">
+    <option value="REST">REST</option>
+    <option value="Firebase">Firebase</option>
+  </select>
+</div>

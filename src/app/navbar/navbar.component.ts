@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {CartWidgetComponent} from "../cart-widget/cart-widget.component";
 import {CurrencySelectorComponent} from "../currency-selector/currency-selector.component";
+import {SourceSelectorComponent} from "../source-selector/source-selector.component";
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,8 @@ import {CurrencySelectorComponent} from "../currency-selector/currency-selector.
   imports: [
     RouterLink,
     CartWidgetComponent,
-    CurrencySelectorComponent
+    CurrencySelectorComponent,
+    SourceSelectorComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'

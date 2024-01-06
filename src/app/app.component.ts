@@ -6,6 +6,7 @@ import {CartWidgetComponent} from "./cart-widget/cart-widget.component";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {TripsService} from "./trips.service";
 import {SpinnerComponent} from "./spinner/spinner.component";
+import {DataSourceService} from "./data-source.service";
 
 @Component({
   selector: 'app-root',
@@ -17,16 +18,14 @@ import {SpinnerComponent} from "./spinner/spinner.component";
 export class AppComponent implements OnInit {
   title = 'biuropawlowski';
 
-  isLoading = false
+  isLoading = true
 
-  constructor(private tripsService: TripsService) {
+  constructor(private tripsService: TripsService, private dataSourceService: DataSourceService) {
   }
 
   ngOnInit(): void {
-    this.isLoading = true
-    this.tripsService.fetchTrips()
-        .finally(() => {
-            this.isLoading = false
-        })
+    this.dataSourceService.loadDataAndObserveLoading().subscribe( isLoading => {
+      this.isLoading = isLoading
+    })
   }
 }

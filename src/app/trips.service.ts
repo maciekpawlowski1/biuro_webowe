@@ -217,4 +217,10 @@ export class TripsService {
                 })
             )
     }
+
+    async reset() {
+      this.tripsSubject.next([])
+      this.selectedTripsIdSubject.next([])
+      await this.fetchTrips()
+    }
 }
