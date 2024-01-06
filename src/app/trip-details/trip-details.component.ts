@@ -6,7 +6,7 @@ import {TripsService} from "../trips.service";
 import {catchError, switchMap, throwError} from "rxjs";
 import {CurrencyPipe} from "../currency.pipe";
 import {TripRatingComponent} from "../trip-rating/trip-rating.component";
-import {NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {ReviewsComponent} from "../reviews/reviews.component";
 import {CurrencyService} from "../currency.service";
 
@@ -19,7 +19,8 @@ import {CurrencyService} from "../currency.service";
     TripRatingComponent,
     NgIf,
     NgForOf,
-    ReviewsComponent
+    ReviewsComponent,
+    DatePipe
   ],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.css'
