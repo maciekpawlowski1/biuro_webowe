@@ -6,16 +6,18 @@
     <p class="mt-4">{{ trip?.trip?.startDate | date }}</p>
   </div>
 
-    <!-- Cena i ocena -->
+
     <div class="mb-6 text-center">
-
         <span class="font-bold">Cena:</span> {{ (trip != null) ? (trip.trip.price | currency:currency) : "" }}
-
-
-      <div class="rating">
-            <app-trip-rating></app-trip-rating>
-        </div>
     </div>
+
+  <div class="mb-6 text-center" *ngIf="trip?.trip?.rating != undefined && trip?.trip?.rating != null && trip?.trip?.rating != 0">
+    <span class="font-bold">Ocena:</span> {{ trip?.trip?.rating }}
+  </div>
+
+  <div class="rating">
+    <app-trip-rating [rating]="rating" (ratingChange)="rateTrip($event)"></app-trip-rating>
+  </div>
 
   <div class="buttons text-center mb-6">
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="addToBasketTrip()">+</button>
@@ -29,6 +31,8 @@
 
   <app-reviews [tripId]="trip?.trip?.id!"></app-reviews>
 
-    <!-- Link powrotny do listy wycieczek -->
+
+  <div class="flex content-center w-full justify-center">
     <a routerLink="/trips" class="text-blue-600 hover:text-blue-800">Powrót do listy wycieczek</a>
+  </div>
 </div>

@@ -34,6 +34,7 @@ export class TripDetailsComponent implements OnInit {
   ]
 
   currency: Currency = Currency.PLN
+  rating: number = 0
 
   constructor(
       private route: ActivatedRoute,
@@ -66,5 +67,9 @@ export class TripDetailsComponent implements OnInit {
 
   removeFromBasketTrip() {
 
+  }
+
+  rateTrip($event: number) {
+    this.rating = $event
   }
 }
