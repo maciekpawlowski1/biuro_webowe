@@ -6,6 +6,9 @@
     <p class="mt-4">{{ trip?.trip?.startDate | date }} - {{ trip?.trip?.endDate | date }}</p>
   </div>
 
+  <div class="mb-6 text-center">
+    <p class="text-center mb-6">{{ trip?.trip?.description }}</p>
+  </div>
 
   <div class="mb-6 text-center">
     <span class="font-bold">Cena:</span> {{ (trip != null) ? (trip.trip.price | currency:currency) : "" }}
