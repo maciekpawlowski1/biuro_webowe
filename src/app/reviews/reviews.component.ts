@@ -45,12 +45,12 @@ export class ReviewsComponent implements OnInit {
 
   onSubmit() {
     if (this.reviewForm.valid) {
-      const review = new Review(
-          this.tripId,
-          this.reviewForm.value.nickname,
-          this.reviewForm.value.reviewText,
-          this.reviewForm.value.purchaseDate
-      )
+      const review = {
+        tripId: this.tripId,
+        nickname: this.reviewForm.value.nickname,
+        reviewText: this.reviewForm.value.reviewText,
+        purchaseDate: this.reviewForm.value.purchaseDate
+      }
       this.reviews.push(review);
       this.reviewForm.reset();
       this.reviewsDataProvider.addReview(review).then( data => {

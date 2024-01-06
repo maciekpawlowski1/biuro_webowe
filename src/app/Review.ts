@@ -1,8 +1,6 @@
-export class Review {
-  constructor(
-    public tripId: string,
-    public nickname: string,
-    public reviewText: string,
-    public purchaseDate?: Date
-  ) {}
+export interface Review {
+  tripId: string,
+  nickname: string,
+  reviewText: string,
+  purchaseDate?: Date
 }
