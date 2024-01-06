@@ -3,15 +3,16 @@
   <div class="text-center mb-6">
     <h2 class="text-3xl font-bold">{{ trip?.trip?.name || '' }} - {{ trip?.trip?.country || '' }}</h2>
     <img src="{{ trip?.trip?.image }}" alt="Zdjęcie wycieczki" class="mx-auto w-1/2 max-w-md"/>
-    <p class="mt-4">{{ trip?.trip?.startDate | date }}</p>
+    <p class="mt-4">{{ trip?.trip?.startDate | date }} - {{ trip?.trip?.endDate | date }}</p>
   </div>
 
 
-    <div class="mb-6 text-center">
-        <span class="font-bold">Cena:</span> {{ (trip != null) ? (trip.trip.price | currency:currency) : "" }}
-    </div>
+  <div class="mb-6 text-center">
+    <span class="font-bold">Cena:</span> {{ (trip != null) ? (trip.trip.price | currency:currency) : "" }}
+  </div>
 
-  <div class="mb-6 text-center" *ngIf="trip?.trip?.rating != undefined && trip?.trip?.rating != null && trip?.trip?.rating != 0">
+  <div class="mb-6 text-center"
+       *ngIf="trip?.trip?.rating != undefined && trip?.trip?.rating != null && trip?.trip?.rating != 0">
     <span class="font-bold">Ocena:</span> {{ trip?.trip?.rating }}
   </div>
 
@@ -19,14 +20,24 @@
     <app-trip-rating [rating]="rating" (ratingChange)="rateTrip($event)"></app-trip-rating>
   </div>
 
-  <div class="buttons text-center mb-6">
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="addToBasketTrip()">+</button>
-    <span>{{ trip?.placesInBasket }} w koszyku</span> <!-- Ilość wycieczek w koszyku -->
-    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" (click)="removeFromBasketTrip()">-</button>
+  <div class="buttons text-center mb-6" *ngIf="trip != null">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+            (click)="addToBasketTrip(trip.trip)"
+            [hidden]="(trip.trip.availableSeats - trip.placesInBasket) === 0">+
+    </button>
+    <span>{{ trip?.placesInBasket }} w koszyku</span>
+    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2 disabled:opacity-50"
+            (click)="removeFromBasketTrip(trip.trip)"
+            [disabled]="trip.placesInBasket === 0"
+            [hidden]="trip.trip.availableSeats === 0">-
+    </button>
   </div>
 
   <div class="flex content-center w-full justify-center">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3070998.1548103387!2d10.074268762916923!3d41.26486482382604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12d4fe82448dd203%3A0xe22cf55c24635e6f!2zV8WCb2NoeQ!5e0!3m2!1spl!2spl!4v1704580608288!5m2!1spl!2spl" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3070998.1548103387!2d10.074268762916923!3d41.26486482382604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12d4fe82448dd203%3A0xe22cf55c24635e6f!2zV8WCb2NoeQ!5e0!3m2!1spl!2spl!4v1704580608288!5m2!1spl!2spl"
+      width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 
   <app-reviews [tripId]="trip?.trip?.id!"></app-reviews>

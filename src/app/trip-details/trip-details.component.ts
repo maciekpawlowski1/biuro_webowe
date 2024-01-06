@@ -9,6 +9,7 @@ import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {ReviewsComponent} from "../reviews/reviews.component";
 import {CurrencyService} from "../currency.service";
+import {Trip} from "../Trip";
 
 @Component({
   selector: 'app-trip-details',
@@ -61,12 +62,12 @@ export class TripDetailsComponent implements OnInit {
       .subscribe(data => this.currency = data)
   }
 
-  addToBasketTrip() {
-
+  addToBasketTrip(trip: Trip) {
+    this.tripsService.putTripInTheBasket(trip)
   }
 
-  removeFromBasketTrip() {
-
+  removeFromBasketTrip(trip: Trip) {
+    this.tripsService.removeTripFromTheBasket(trip)
   }
 
   rateTrip($event: number) {
