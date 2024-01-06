@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {TripWithBasketInfo} from "../TripWithBasketInfo";
 import {Currency} from "../Currency";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {TripsService} from "../trips.service";
-import {switchMap} from "rxjs";
+import {catchError, switchMap, throwError} from "rxjs";
 import {CurrencyPipe} from "../currency.pipe";
 import {TripRatingComponent} from "../trip-rating/trip-rating.component";
 import {NgForOf, NgIf} from "@angular/common";
@@ -38,6 +38,7 @@ export class TripDetailsComponent implements OnInit {
       private route: ActivatedRoute,
       private tripsService: TripsService,
       private currencyService: CurrencyService,
+      private router: Router,
   ) {
   }
 
@@ -46,6 +47,11 @@ export class TripDetailsComponent implements OnInit {
       switchMap(params => {
         const tripId = params.get('id')!;
         return this.tripsService.getTripById(tripId)
+      }),
+      catchError(error => {
+        console.error('Wystąpił błąd:', error);
+        this.router.navigate(['/trips']);
+        return throwError(error);
       })
     ).subscribe(data => this.trip = data)
 
